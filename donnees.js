@@ -53,7 +53,7 @@ window.SITE = {
       "id": "savon-au-charbon-de-bambou",
       "nom": "Savon au charbon de bambou",
       "categorie": "Soins du corps",
-      "prix": 0,
+      "prix": 5000,
       "description": "Natural Essence Bamboo Charcoal Soap : savon pour le visage et le corps, pour une peau nette et fraîche.",
       "image": "images/savon-charbon.jpg",
       "icone": "🧼",
