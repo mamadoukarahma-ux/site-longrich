@@ -11,7 +11,7 @@
   $("hero-slogan").textContent = BOUTIQUE.slogan + " · " + BOUTIQUE.ville;
   $("hero-livraison").textContent = BOUTIQUE.livraison.split(".")[0];
   $("about-text").textContent =
-    "Je m'appelle " + BOUTIQUE.nom + ", distributrice indépendante Longrich basée à " + BOUTIQUE.ville +
+    "Je m'appelle " + BOUTIQUE.nom + ", " + BOUTIQUE.slogan.toLowerCase() + " basé à " + BOUTIQUE.ville +
     ". Je vous conseille et vous aide à choisir les produits adaptés à vos besoins. " + BOUTIQUE.livraison;
   $("footer-text").textContent = "© " + new Date().getFullYear() + " " + BOUTIQUE.nom + " · " + BOUTIQUE.ville;
 
