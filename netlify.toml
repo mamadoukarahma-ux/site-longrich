@@ -1,0 +1,16 @@
+# Configuration Netlify : le site est publié tel quel, sans étape de fabrication.
+[build]
+  publish = "."
+
+# Sécurité : ne jamais servir l'historique Git
+[[redirects]]
+  from = "/.git/*"
+  to = "/index.html"
+  status = 404
+  force = true
+
+# Toujours servir la dernière version des données et des pages
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
