@@ -51,6 +51,11 @@
     .toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--text); color: #fff; padding: 12px 18px; border-radius: 12px; z-index: 60; max-width: calc(100% - 32px); box-shadow: var(--shadow); font-size: .9rem; }
     .toast.err { background: #b3261e; }
     .busy { position: fixed; inset: 0; background: rgba(255,255,255,.6); z-index: 50; display: grid; place-items: center; font-weight: 600; }
+    .price-edit { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font-size: .8rem; color: var(--muted); }
+    .price-edit input { width: 120px; font: inherit; font-size: .9rem; padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; color: var(--text); }
+    .price-edit input.changed { border-color: var(--gold); background: #fffbea; }
+    .price-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 35; background: #fff; border-top: 1px solid var(--border); box-shadow: 0 -6px 24px rgba(0,0,0,.08); }
+    .price-bar-inner { max-width: 860px; margin: 0 auto; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
     .note { background: var(--green-light); border-radius: 12px; padding: 12px 14px; font-size: .85rem; color: var(--green-dark); margin-bottom: 16px; }
     @media (max-width: 600px) {
       .prow { grid-template-columns: 56px 1fr; }
@@ -106,6 +111,16 @@
       <div class="plist" id="plist"></div>
     </div>
 
+    <div class="price-bar" id="price-bar" hidden>
+      <div class="price-bar-inner">
+        <strong id="price-count"></strong>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost btn-sm" id="price-cancel">Annuler</button>
+          <button class="btn btn-primary btn-sm" id="price-save">Enregistrer les prix</button>
+        </div>
+      </div>
+    </div>
+
     <div id="tab-boutique" hidden>
       <form class="box stack" id="shop-form">
         <label class="field">Nom affiché<input name="nom" required></label>
@@ -146,7 +161,7 @@
       <label class="field">Nom du produit<input name="nom" required maxlength="80"></label>
       <div class="row2">
         <label class="field">Catégorie<select name="categorie" id="cat-select"></select></label>
-        <label class="field">Prix (0 = prix sur demande)<input name="prix" type="number" min="0" step="50" inputmode="numeric"></label>
+        <label class="field">Prix (0 = prix sur demande)<input name="prix" type="number" min="0" step="1" inputmode="numeric"></label>
       </div>
       <label class="field">Description<textarea name="description" maxlength="400"></textarea></label>
       <label class="check"><input name="disponible" type="checkbox"> Disponible (décochez si en rupture de stock)</label>
@@ -305,7 +320,11 @@
           <div class="thumb">${p.image ? `<img src="${esc(imgSrc(p.image))}" alt="">` : esc(p.icone || "🛍️")}</div>
           <div class="pinfo">
             <strong>${esc(p.nom)}${p.disponible === false ? `<span class="tag-off">Rupture</span>` : ""}</strong>
-            <span>${esc(p.categorie)} · ${p.prix > 0 ? fmt(p.prix) + " " + esc(data.boutique.devise || "FCFA") : "Prix sur demande"}</span>
+            <span>${esc(p.categorie)}</span>
+            <label class="price-edit">Prix
+              <input type="number" min="0" step="1" inputmode="numeric" placeholder="sur demande"
+                data-price="${esc(p.id)}" value="${esc(prixAffiche(p))}" class="${p.id in prixModifies ? "changed" : ""}">
+              ${esc(data.boutique.devise || "FCFA")}</label>
           </div>
           <div class="pactions">
             <button class="mini" data-act="up" data-i="${i}" ${i === 0 || q ? "disabled" : ""} title="Monter">↑</button>
@@ -316,6 +335,47 @@
           </div>
         </div>`).join("") : `<p class="empty">Aucun produit.</p>`;
     }
+    // ---- Saisie rapide des prix dans la liste ----
+    let prixModifies = {}; // id -> nouveau prix (nombre), en attente d'enregistrement
+    const lirePrix = (v) => Math.max(0, Math.round(Number(v) || 0));
+    function prixAffiche(p) {
+      const v = p.id in prixModifies ? prixModifies[p.id] : p.prix;
+      return v > 0 ? v : "";
+    }
+    function majBarrePrix() {
+      const n = Object.keys(prixModifies).length;
+      $("price-bar").hidden = n === 0;
+      $("price-count").textContent = n + (n > 1 ? " prix modifiés" : " prix modifié");
+    }
+    $("plist").addEventListener("input", (e) => {
+      const id = e.target.dataset.price;
+      if (!id) return;
+      const p = data.produits.find((x) => x.id === id);
+      const v = lirePrix(e.target.value);
+      if (p && v !== (p.prix || 0)) prixModifies[id] = v;
+      else delete prixModifies[id];
+      e.target.classList.toggle("changed", id in prixModifies);
+      majBarrePrix();
+    });
+    $("price-cancel").addEventListener("click", () => { prixModifies = {}; majBarrePrix(); render(); });
+    $("price-save").addEventListener("click", async () => {
+      const anciens = data.produits.map((p) => p.prix);
+      data.produits.forEach((p) => { if (p.id in prixModifies) p.prix = prixModifies[p.id]; });
+      busy(true, "Enregistrement des prix…");
+      try {
+        const n = Object.keys(prixModifies).length;
+        await saveData("Met à jour les prix (" + n + " produit" + (n > 1 ? "s" : "") + ")");
+        prixModifies = {};
+        majBarrePrix();
+        render();
+        toast("Prix enregistrés ✓ Visibles sur le site dans 1 à 2 minutes.");
+      } catch (err) {
+        data.produits.forEach((p, i) => (p.prix = anciens[i]));
+        await handleError(err);
+      } finally { busy(false); }
+    });
+    window.addEventListener("beforeunload", (e) => { if (Object.keys(prixModifies).length) { e.preventDefault(); e.returnValue = ""; } });
+
     function fillShopForm() {
       const f = $("shop-form");
       ["nom", "slogan", "ville", "whatsapp", "telephone", "livraison", "email", "devise", "facebook", "instagram"].forEach((k) => (f.elements[k].value = data.boutique[k] || ""));
@@ -344,6 +404,7 @@
     function logout() {
       store.clear();
       token = ""; data = null;
+      prixModifies = {}; majBarrePrix();
       $("token").value = "";
       $("app-view").hidden = true;
       $("login-view").hidden = false;
@@ -388,6 +449,8 @@
           busy(true, "Suppression…");
           data.produits.splice(i, 1);
           await saveData("Supprime le produit : " + p.nom);
+          delete prixModifies[p.id];
+          majBarrePrix();
           await deleteImageIfUnused(p.image);
           toast("Produit supprimé.");
         }
@@ -413,7 +476,7 @@
       $("cat-select").innerHTML = cats.map((c) => `<option>${esc(c)}</option>`).join("");
       f.elements.nom.value = p ? p.nom : "";
       f.elements.categorie.value = p ? p.categorie : cats[0] || "";
-      f.elements.prix.value = p ? p.prix || 0 : 0;
+      f.elements.prix.value = p ? prixAffiche(p) || 0 : 0;
       f.elements.description.value = p ? p.description || "" : "";
       f.elements.disponible.checked = p ? p.disponible !== false : true;
       setPreview(p && p.image ? imgSrc(p.image) : "", p && p.icone);
@@ -472,6 +535,8 @@
         busy(true, "Enregistrement…");
         await saveData((isNew ? "Ajoute le produit : " : "Modifie le produit : ") + nom);
         if (ancienne && ancienne !== p.image) await deleteImageIfUnused(ancienne);
+        delete prixModifies[p.id];
+        majBarrePrix();
         closeForm();
         render();
         toast(isNew ? "Produit ajouté ✓ Visible sur le site dans 1 à 2 minutes." : "Modifications enregistrées ✓");
