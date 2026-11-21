@@ -93,7 +93,7 @@ window.SITE = {
       "id": "dentifrice-au-the-blanc",
       "nom": "Dentifrice au thé blanc",
       "categorie": "Hygiène",
-      "prix": 0,
+      "prix": 5000,
       "description": "White Tea Multi-Effect Toothpaste : dentifrice au thé blanc pour une haleine fraîche et des gencives saines.",
       "image": "images/dentifrice-the-blanc.jpg",
       "icone": "🪥",
