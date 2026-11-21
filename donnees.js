@@ -33,7 +33,7 @@ window.SITE = {
       "id": "huile-de-bain-parfum-olive",
       "nom": "Huile de bain parfum olive",
       "categorie": "Soins du corps",
-      "prix": 0,
+      "prix": 10000,
       "description": "Golden Olive Scented Bath Oil : huile de bain au doux parfum d'olive pour une peau douce et nourrie.",
       "image": "images/huile-bain-olive.jpg",
       "icone": "🫒",
