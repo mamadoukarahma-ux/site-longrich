@@ -112,6 +112,7 @@
   $("cart-open").addEventListener("click", ouvrir);
   $("cart-close").addEventListener("click", fermer);
   $("overlay").addEventListener("click", fermer);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") fermer(); });
 
   $("send-order").addEventListener("click", () => {
     const l = lignes();
