@@ -20,6 +20,16 @@ window.SITE = {
   ],
   "produits": [
     {
+      "id": "gel-test-mwqrzhzx",
+      "icone": "🛍️",
+      "image": "images/gel-test-mwqrzhzx.jpg",
+      "nom": "GEL_TEST",
+      "categorie": "Soins du corps",
+      "prix": 25000,
+      "description": "",
+      "disponible": true
+    },
+    {
       "id": "huile-de-bain-parfum-olive",
       "nom": "Huile de bain parfum olive",
       "categorie": "Soins du corps",
