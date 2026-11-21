@@ -113,7 +113,7 @@ window.SITE = {
       "id": "vitamine-c-a-croquer",
       "nom": "Vitamine C à croquer",
       "categorie": "Compléments alimentaires",
-      "prix": 0,
+      "prix": 55000,
       "description": "Comprimés à croquer goût orange (60 comprimés). Complément alimentaire, source de vitamine C.",
       "image": "images/vitamine-c.jpg",
       "icone": "🍊",
