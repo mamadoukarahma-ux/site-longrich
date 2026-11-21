@@ -17,7 +17,7 @@
   $("hero-slogan").textContent = BOUTIQUE.slogan + " · " + BOUTIQUE.ville;
   $("hero-livraison").textContent = (BOUTIQUE.livraison || "Livraison rapide").split(".")[0];
   $("about-text").textContent =
-    "Je m'appelle " + BOUTIQUE.nom + ", " + (BOUTIQUE.slogan || "").toLowerCase() + " basé à " + BOUTIQUE.ville +
+    "Je m'appelle " + BOUTIQUE.nom + ", " + (BOUTIQUE.slogan || "").replace(/^./, (c) => c.toLowerCase()) + " basé à " + BOUTIQUE.ville +
     ". Je vous conseille et vous aide à choisir les produits adaptés à vos besoins. " + (BOUTIQUE.livraison || "");
   $("footer-text").textContent = "© " + new Date().getFullYear() + " " + BOUTIQUE.nom + " · " + BOUTIQUE.ville;
 
@@ -120,6 +120,8 @@
   const ouvrir = () => { $("drawer").hidden = false; $("overlay").hidden = false; };
   const fermer = () => { $("drawer").hidden = true; $("overlay").hidden = true; };
   $("cart-open").addEventListener("click", ouvrir);
+  $("step-cart").addEventListener("click", ouvrir);
+  $("step-wa").href = waLink("Bonjour " + BOUTIQUE.nom + ", j'ai une question sur la livraison et le paiement.");
   $("cart-close").addEventListener("click", fermer);
   $("overlay").addEventListener("click", fermer);
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") fermer(); });
