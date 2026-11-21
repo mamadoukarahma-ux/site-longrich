@@ -83,7 +83,7 @@ window.SITE = {
       "id": "deodorant-roll-on-anti-transpirant",
       "nom": "Déodorant roll-on anti-transpirant",
       "categorie": "Hygiène",
-      "prix": 0,
+      "prix": 13000,
       "description": "Antiperspirant Dew 50 ml : protection contre les odeurs et sensation de fraîcheur toute la journée.",
       "image": "images/deodorant.jpg",
       "icone": "💧",
