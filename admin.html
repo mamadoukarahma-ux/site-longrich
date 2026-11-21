@@ -362,6 +362,7 @@
       if (tab === "boutique") fillShopForm();
     });
     $("search").addEventListener("input", render);
+    $("add-btn").addEventListener("click", () => openForm(null));
 
     // ---- Actions sur la liste ----
     $("plist").addEventListener("click", async (e) => {
