@@ -103,7 +103,7 @@ window.SITE = {
       "id": "brown-tea-nutrivrich",
       "nom": "Brown Tea NutriVRich",
       "categorie": "Bien-être",
-      "prix": 0,
+      "prix": 15000,
       "description": "Thé brun en sachets (15 × 3 g), à déguster chaud à tout moment de la journée.",
       "image": "images/brown-tea.jpg",
       "icone": "🍵",
