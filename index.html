@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Produits Longrich</title>
+  <meta name="description" content="Achetez vos produits Longrich auprès d'une distributrice indépendante. Commande simple par WhatsApp.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="#" class="brand"><span class="brand-dot">L</span><span id="brand-name">Boutique</span></a>
+      <nav class="nav">
+        <a href="#produits">Produits</a>
+        <a href="#apropos">À propos</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="cart-btn" id="cart-open" aria-label="Voir le panier">
+        🛒 <span id="cart-count">0</span>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-inner">
+      <div>
+        <p class="eyebrow" id="hero-slogan"></p>
+        <h1>Des produits du quotidien, livrés près de chez vous</h1>
+        <p class="lead">Hygiène, soins du corps, maison et bien-être. Choisissez vos produits et commandez en un clic sur WhatsApp.</p>
+        <div class="hero-actions">
+          <a href="#produits" class="btn btn-primary">Voir les produits</a>
+          <a href="#" class="btn btn-ghost" id="hero-whatsapp">💬 Nous écrire</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-badge">✔ Produits authentiques</div>
+        <div class="hero-badge">🚚 <span id="hero-livraison">Livraison rapide</span></div>
+        <div class="hero-badge">💬 Conseils personnalisés</div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section id="produits" class="section">
+      <div class="container">
+        <h2>Nos produits</h2>
+        <div class="filters" id="filters"></div>
+        <div class="grid" id="grid"></div>
+      </div>
+    </section>
+
+    <section id="apropos" class="section section-alt">
+      <div class="container about">
+        <div>
+          <h2>À propos</h2>
+          <p id="about-text"></p>
+        </div>
+        <ol class="steps">
+          <li><strong>Choisissez</strong> vos produits et ajoutez-les au panier.</li>
+          <li><strong>Envoyez</strong> la commande sur WhatsApp en un clic.</li>
+          <li><strong>Recevez</strong> vos produits et payez à la livraison ou par mobile money.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container contact">
+        <h2>Contact</h2>
+        <ul class="contact-list" id="contact-list"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p id="footer-text"></p>
+      <p class="small">Distributrice indépendante. Ce site n'est pas le site officiel de la marque Longrich.</p>
+    </div>
+  </footer>
+
+  <a href="#" class="wa-float" id="wa-float" aria-label="WhatsApp">💬</a>
+
+  <div class="overlay" id="overlay" hidden></div>
+  <aside class="drawer" id="drawer" aria-label="Panier" hidden>
+    <div class="drawer-head">
+      <h3>Votre panier</h3>
+      <button class="icon-btn" id="cart-close" aria-label="Fermer">✕</button>
+    </div>
+    <div class="drawer-body" id="cart-items"></div>
+    <div class="drawer-foot">
+      <div class="total"><span>Total</span><strong id="cart-total">0</strong></div>
+      <label class="field">Votre nom<input id="client-nom" type="text" placeholder="Ex : Aïssatou"></label>
+      <label class="field">Quartier / adresse de livraison<input id="client-adresse" type="text" placeholder="Ex : Médina, rue 10"></label>
+      <button class="btn btn-whatsapp" id="send-order">Commander sur WhatsApp</button>
+    </div>
+  </aside>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
