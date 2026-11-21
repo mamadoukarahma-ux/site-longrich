@@ -73,7 +73,7 @@ window.SITE = {
       "id": "gel-a-l-extrait-de-bile-de-serpent",
       "nom": "Gel à l'extrait de bile de serpent",
       "categorie": "Soins du corps",
-      "prix": 0,
+      "prix": 40000,
       "description": "Soin Longrich à l'extrait de bile de serpent. Demandez conseil pour son utilisation.",
       "image": "images/gel-bile-serpent.jpg",
       "icone": "✨",
