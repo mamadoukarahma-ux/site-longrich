@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Administration boutique</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background: var(--bg-alt); }
+    .admin-wrap { max-width: 860px; margin: 0 auto; padding: 24px 16px 96px; }
+    .box { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
+    .login { max-width: 460px; margin: 48px auto; }
+    .login h1 { font-size: 1.5rem; }
+    .login p, .help { color: var(--muted); font-size: .9rem; }
+    .help summary { cursor: pointer; color: var(--green); font-weight: 600; }
+    .help ol { padding-left: 20px; }
+    .stack { display: grid; gap: 14px; }
+    .field input, .field select, .field textarea { font: inherit; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; color: var(--text); background: #fff; width: 100%; }
+    .field textarea { min-height: 90px; resize: vertical; }
+    .check { display: flex; gap: 8px; align-items: center; font-size: .9rem; }
+    .admin-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+    .admin-head h1 { font-size: 1.4rem; margin: 0; }
+    .admin-head .links { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-sm { padding: 8px 14px; font-size: .85rem; }
+    .btn-danger { background: #fff; color: #b3261e; border-color: #f1c4c0; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+    .toolbar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+    .toolbar input { flex: 1; min-width: 180px; font: inherit; padding: 10px 14px; border: 1px solid var(--border); border-radius: 999px; }
+    .plist { display: grid; gap: 10px; }
+    .prow { display: grid; grid-template-columns: 64px 1fr auto; gap: 14px; align-items: center; background: #fff; border-radius: 14px; padding: 10px 14px; border: 1px solid var(--border); }
+    .prow.off { opacity: .6; }
+    .thumb { width: 64px; height: 64px; border-radius: 10px; background: var(--green-light); display: grid; place-items: center; font-size: 1.8rem; overflow: hidden; }
+    .thumb img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
+    .pinfo strong { display: block; line-height: 1.3; }
+    .pinfo span { font-size: .8rem; color: var(--muted); }
+    .pactions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+    .mini { border: 1px solid var(--border); background: #fff; border-radius: 8px; padding: 6px 10px; font: inherit; font-size: .8rem; cursor: pointer; }
+    .mini:hover { border-color: var(--green); }
+    .mini:disabled { opacity: .35; cursor: default; }
+    .tag-off { background: #fde8e6; color: #b3261e; border-radius: 999px; padding: 1px 8px; font-size: .7rem; font-weight: 600; margin-left: 6px; }
+    .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 40; display: grid; place-items: center; padding: 16px; overflow-y: auto; }
+    .modal { width: min(560px, 100%); max-height: calc(100vh - 32px); overflow-y: auto; }
+    .modal h2 { font-size: 1.3rem; margin-bottom: 16px; }
+    .photo-zone { display: grid; grid-template-columns: 120px 1fr; gap: 14px; align-items: center; }
+    .photo-zone .thumb { width: 120px; height: 120px; font-size: 3rem; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }
+    .toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--text); color: #fff; padding: 12px 18px; border-radius: 12px; z-index: 60; max-width: calc(100% - 32px); box-shadow: var(--shadow); font-size: .9rem; }
+    .toast.err { background: #b3261e; }
+    .busy { position: fixed; inset: 0; background: rgba(255,255,255,.6); z-index: 50; display: grid; place-items: center; font-weight: 600; }
+    .note { background: var(--green-light); border-radius: 12px; padding: 12px 14px; font-size: .85rem; color: var(--green-dark); margin-bottom: 16px; }
+    @media (max-width: 600px) {
+      .prow { grid-template-columns: 56px 1fr; }
+      .thumb { width: 56px; height: 56px; }
+      .pactions { grid-column: 1 / -1; justify-content: flex-start; }
+      .row2, .photo-zone { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Connexion -->
+  <section id="login-view" class="admin-wrap" hidden>
+    <div class="box login stack">
+      <h1>🔐 Administration</h1>
+      <p>Collez votre <strong>code d'accès GitHub</strong> pour gérer les produits de la boutique.</p>
+      <label class="field">Code d'accès<input id="token" type="password" autocomplete="off" placeholder="github_pat_..."></label>
+      <label class="check"><input id="remember" type="checkbox" checked> Rester connecté(e) sur cet appareil</label>
+      <button class="btn btn-primary" id="login-btn">Se connecter</button>
+      <details class="help">
+        <summary>Comment obtenir un code d'accès ?</summary>
+        <ol>
+          <li>Connectez-vous sur <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → créer un code</a>.</li>
+          <li><em>Repository access</em> : choisissez <strong>Only select repositories</strong> puis <strong>site-longrich</strong>.</li>
+          <li><em>Permissions</em> → <em>Contents</em> : <strong>Read and write</strong>.</li>
+          <li>Cliquez sur <strong>Generate token</strong> et copiez le code ici.</li>
+        </ol>
+      </details>
+    </div>
+  </section>
+
+  <!-- Tableau de bord -->
+  <section id="app-view" class="admin-wrap" hidden>
+    <div class="admin-head">
+      <h1>🛍️ Ma boutique</h1>
+      <div class="links">
+        <a class="btn btn-ghost btn-sm" href="index.html" target="_blank" rel="noopener">Voir le site</a>
+        <button class="btn btn-ghost btn-sm" id="logout">Se déconnecter</button>
+      </div>
+    </div>
+
+    <div class="note">Chaque modification est enregistrée tout de suite. Elle apparaît sur le site public en 1 à 2 minutes (rechargez la page du site).</div>
+
+    <div class="tabs">
+      <button class="chip active" data-tab="produits">Produits</button>
+      <button class="chip" data-tab="boutique">Infos boutique</button>
+    </div>
+
+    <div id="tab-produits">
+      <div class="toolbar">
+        <input id="search" type="search" placeholder="Rechercher un produit…">
+        <button class="btn btn-primary" id="add-btn">+ Nouveau produit</button>
+      </div>
+      <div class="plist" id="plist"></div>
+    </div>
+
+    <div id="tab-boutique" hidden>
+      <form class="box stack" id="shop-form">
+        <label class="field">Nom affiché<input name="nom" required></label>
+        <label class="field">Slogan<input name="slogan"></label>
+        <label class="field">Ville<input name="ville"></label>
+        <div class="row2">
+          <label class="field">Numéro WhatsApp (ex : 221771234567)<input name="whatsapp" inputmode="numeric" pattern="[0-9]{8,15}" title="Chiffres uniquement, avec l'indicatif pays, sans + ni espaces"></label>
+          <label class="field">Téléphone affiché<input name="telephone"></label>
+        </div>
+        <label class="field">Texte livraison<textarea name="livraison"></textarea></label>
+        <div class="row2">
+          <label class="field">E-mail<input name="email" type="email"></label>
+          <label class="field">Devise<input name="devise"></label>
+        </div>
+        <div class="row2">
+          <label class="field">Lien Facebook<input name="facebook" type="url" placeholder="https://facebook.com/..."></label>
+          <label class="field">Lien Instagram<input name="instagram" type="url" placeholder="https://instagram.com/..."></label>
+        </div>
+        <label class="field">Catégories (une par ligne)<textarea name="categories"></textarea></label>
+        <div class="modal-actions"><button class="btn btn-primary" type="submit">Enregistrer</button></div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Formulaire produit -->
+  <div class="modal-bg" id="modal" hidden>
+    <form class="box modal stack" id="product-form">
+      <h2 id="modal-title">Produit</h2>
+      <div class="photo-zone">
+        <div class="thumb" id="photo-preview">🛍️</div>
+        <div class="stack">
+          <label class="btn btn-ghost btn-sm" style="cursor:pointer">📷 Choisir une photo
+            <input id="photo" type="file" accept="image/*" hidden>
+          </label>
+          <button type="button" class="mini" id="photo-remove">Retirer la photo</button>
+        </div>
+      </div>
+      <label class="field">Nom du produit<input name="nom" required maxlength="80"></label>
+      <div class="row2">
+        <label class="field">Catégorie<select name="categorie" id="cat-select"></select></label>
+        <label class="field">Prix (0 = prix sur demande)<input name="prix" type="number" min="0" step="50" inputmode="numeric"></label>
+      </div>
+      <label class="field">Description<textarea name="description" maxlength="400"></textarea></label>
+      <label class="check"><input name="disponible" type="checkbox"> Disponible (décochez si en rupture de stock)</label>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cancel">Annuler</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="busy" id="busy" hidden>Enregistrement…</div>
+  <div class="toast" id="toast" hidden></div>
+
+  <script>
+  (function () {
+    // ---- Réglages du dépôt GitHub ----
+    const OWNER = "mamadoukarahma-ux";
+    const REPO = "site-longrich";
+    const BRANCH = "main";
+    const DATA_FILE = "donnees.js";
+    const API = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/contents/";
+    const RAW = "https://raw.githubusercontent.com/" + OWNER + "/" + REPO + "/" + BRANCH + "/";
+
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const fmt = (n) => Number(n).toLocaleString("fr-FR");
+
+    let token = "";
+    let data = null;     // contenu de donnees.js
+    let dataSha = "";    // version du fichier sur GitHub
+    let editing = null;  // produit en cours de modification (null = nouveau)
+    let newPhoto = null; // { blob, dataUrl } si une nouvelle photo a été choisie
+    let removePhoto = false;
+    const previews = {}; // aperçus des photos envoyées pendant cette session
+
+    // ---- Stockage du code d'accès ----
+    const store = {
+      get() { try { return localStorage.getItem("admin-token") || sessionStorage.getItem("admin-token") || ""; } catch (_) { return ""; } },
+      set(t, remember) { try { (remember ? localStorage : sessionStorage).setItem("admin-token", t); } catch (_) {} },
+      clear() { try { localStorage.removeItem("admin-token"); sessionStorage.removeItem("admin-token"); } catch (_) {} },
+    };
+
+    // ---- Messages ----
+    let toastTimer;
+    function toast(msg, err) {
+      const t = $("toast");
+      t.textContent = msg;
+      t.className = "toast" + (err ? " err" : "");
+      t.hidden = false;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => (t.hidden = true), err ? 7000 : 4000);
+    }
+    const busy = (on, label) => { $("busy").hidden = !on; if (label) $("busy").textContent = label; };
+
+    // ---- API GitHub ----
+    async function gh(path, opts) {
+      opts = opts || {};
+      const r = await fetch(API + path, {
+        method: opts.method || "GET",
+        cache: "no-store",
+        headers: {
+          Authorization: "Bearer " + token,
+          Accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+          ...(opts.body ? { "Content-Type": "application/json" } : {}),
+        },
+        body: opts.body ? JSON.stringify(opts.body) : undefined,
+      });
+      if (!r.ok) {
+        const e = new Error("GitHub " + r.status);
+        e.status = r.status;
+        throw e;
+      }
+      return r.status === 204 ? null : r.json();
+    }
+    function errMsg(e) {
+      if (e.status === 401) return "Code d'accès invalide ou expiré. Reconnectez-vous.";
+      if (e.status === 403 || e.status === 404) return "Ce code d'accès n'a pas le droit de modifier le site (vérifiez « Contents : Read and write » sur site-longrich).";
+      if (e.status === 409 || e.status === 422) return "Le site a été modifié ailleurs entre-temps. La page va se recharger, refaites la modification.";
+      if (e.message === "format") return "Le fichier des données est illisible.";
+      return "Problème de connexion. Vérifiez Internet et réessayez.";
+    }
+    const toB64 = (bytes) => { let s = ""; for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(s); };
+    const fromB64 = (b64) => Uint8Array.from(atob(b64.replace(/\s/g, "")), (c) => c.charCodeAt(0));
+
+    async function loadData() {
+      const f = await gh(DATA_FILE + "?ref=" + BRANCH);
+      const text = new TextDecoder().decode(fromB64(f.content));
+      const start = text.indexOf("{"), end = text.lastIndexOf("}");
+      if (start < 0 || end < 0) throw new Error("format");
+      data = JSON.parse(text.slice(start, end + 1));
+      data.boutique = data.boutique || {};
+      data.categories = data.categories || [];
+      data.produits = data.produits || [];
+      dataSha = f.sha;
+    }
+    async function saveData(message) {
+      const text = "// Ce fichier est mis à jour automatiquement par la page admin.html — inutile de le modifier à la main.\nwindow.SITE = " + JSON.stringify(data, null, 2) + ";\n";
+      const r = await gh(DATA_FILE, { method: "PUT", body: { message, content: toB64(new TextEncoder().encode(text)), sha: dataSha, branch: BRANCH } });
+      dataSha = r.content.sha;
+    }
+    async function uploadImage(path, blob, message) {
+      const bytes = new Uint8Array(await blob.arrayBuffer());
+      await gh(path, { method: "PUT", body: { message, content: toB64(bytes), branch: BRANCH } });
+    }
+    async function deleteImageIfUnused(path) {
+      if (!path || !path.startsWith("images/")) return;
+      if (data.produits.some((p) => p.image === path)) return;
+      try {
+        const f = await gh(path + "?ref=" + BRANCH);
+        await gh(path, { method: "DELETE", body: { message: "Supprime la photo " + path, sha: f.sha, branch: BRANCH } });
+      } catch (_) { /* pas grave : la photo reste simplement dans le dossier */ }
+    }
+
+    // Une erreur de conflit => on recharge les données pour repartir sur la bonne version
+    async function handleError(e) {
+      toast(errMsg(e), true);
+      if (e.status === 401) { logout(); return; }
+      if (e.status === 409 || e.status === 422) {
+        try { await loadData(); render(); } catch (_) {}
+      }
+    }
+
+    // ---- Photos : redimensionnement avant envoi ----
+    function resize(file) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => {
+          const max = 900;
+          const k = Math.min(1, max / Math.max(img.width, img.height));
+          const c = document.createElement("canvas");
+          c.width = Math.round(img.width * k);
+          c.height = Math.round(img.height * k);
+          const ctx = c.getContext("2d");
+          ctx.fillStyle = "#fff";
+          ctx.fillRect(0, 0, c.width, c.height);
+          ctx.drawImage(img, 0, 0, c.width, c.height);
+          URL.revokeObjectURL(url);
+          const dataUrl = c.toDataURL("image/jpeg", 0.85);
+          c.toBlob((blob) => (blob ? resolve({ blob, dataUrl }) : reject(new Error("image"))), "image/jpeg", 0.85);
+        };
+        img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("image")); };
+        img.src = url;
+      });
+    }
+    const slug = (s) => String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "produit";
+    const imgSrc = (p) => previews[p] || (p ? RAW + p : "");
+
+    // ---- Affichage ----
+    function render() {
+      const q = $("search").value.trim().toLowerCase();
+      const list = data.produits.map((p, i) => ({ p, i })).filter(({ p }) => !q || (p.nom + " " + p.categorie).toLowerCase().includes(q));
+      $("plist").innerHTML = list.length ? list.map(({ p, i }) => `
+        <div class="prow ${p.disponible === false ? "off" : ""}">
+          <div class="thumb">${p.image ? `<img src="${esc(imgSrc(p.image))}" alt="">` : esc(p.icone || "🛍️")}</div>
+          <div class="pinfo">
+            <strong>${esc(p.nom)}${p.disponible === false ? `<span class="tag-off">Rupture</span>` : ""}</strong>
+            <span>${esc(p.categorie)} · ${p.prix > 0 ? fmt(p.prix) + " " + esc(data.boutique.devise || "FCFA") : "Prix sur demande"}</span>
+          </div>
+          <div class="pactions">
+            <button class="mini" data-act="up" data-i="${i}" ${i === 0 || q ? "disabled" : ""} title="Monter">↑</button>
+            <button class="mini" data-act="down" data-i="${i}" ${i === data.produits.length - 1 || q ? "disabled" : ""} title="Descendre">↓</button>
+            <button class="mini" data-act="toggle" data-i="${i}">${p.disponible === false ? "Remettre en stock" : "Rupture"}</button>
+            <button class="mini" data-act="edit" data-i="${i}">✏️ Modifier</button>
+            <button class="mini" data-act="del" data-i="${i}">🗑️</button>
+          </div>
+        </div>`).join("") : `<p class="empty">Aucun produit.</p>`;
+    }
+    function fillShopForm() {
+      const f = $("shop-form");
+      ["nom", "slogan", "ville", "whatsapp", "telephone", "livraison", "email", "devise", "facebook", "instagram"].forEach((k) => (f.elements[k].value = data.boutique[k] || ""));
+      f.elements.categories.value = data.categories.join("\n");
+    }
+
+    // ---- Connexion ----
+    async function login(t, remember) {
+      token = t.trim();
+      if (!token) return;
+      busy(true, "Connexion…");
+      try {
+        await loadData();
+        store.set(token, remember);
+        $("login-view").hidden = true;
+        $("app-view").hidden = false;
+        render();
+        fillShopForm();
+      } catch (e) {
+        token = "";
+        store.clear();
+        $("login-view").hidden = false;
+        toast(errMsg(e), true);
+      } finally { busy(false); }
+    }
+    function logout() {
+      store.clear();
+      token = ""; data = null;
+      $("token").value = "";
+      $("app-view").hidden = true;
+      $("login-view").hidden = false;
+    }
+    $("login-btn").addEventListener("click", () => login($("token").value, $("remember").checked));
+    $("token").addEventListener("keydown", (e) => { if (e.key === "Enter") login($("token").value, $("remember").checked); });
+    $("logout").addEventListener("click", logout);
+
+    // ---- Onglets ----
+    document.querySelector(".tabs").addEventListener("click", (e) => {
+      const tab = e.target.dataset.tab;
+      if (!tab) return;
+      document.querySelectorAll(".tabs .chip").forEach((b) => b.classList.toggle("active", b.dataset.tab === tab));
+      $("tab-produits").hidden = tab !== "produits";
+      $("tab-boutique").hidden = tab !== "boutique";
+      if (tab === "boutique") fillShopForm();
+    });
+    $("search").addEventListener("input", render);
+
+    // ---- Actions sur la liste ----
+    $("plist").addEventListener("click", async (e) => {
+      const b = e.target.closest("button[data-act]");
+      if (!b) return;
+      const i = Number(b.dataset.i);
+      const p = data.produits[i];
+      const act = b.dataset.act;
+      if (act === "edit") return openForm(p);
+      busy(true, "Enregistrement…");
+      try {
+        if (act === "up" || act === "down") {
+          const j = act === "up" ? i - 1 : i + 1;
+          [data.produits[i], data.produits[j]] = [data.produits[j], data.produits[i]];
+          await saveData("Change l'ordre des produits");
+        } else if (act === "toggle") {
+          p.disponible = p.disponible === false;
+          await saveData((p.disponible ? "Remet en stock : " : "Rupture de stock : ") + p.nom);
+          toast(p.disponible ? "« " + p.nom + " » est de nouveau disponible." : "« " + p.nom + " » est marqué en rupture.");
+        } else if (act === "del") {
+          busy(false);
+          if (!confirm("Supprimer « " + p.nom + " » du site ?")) return;
+          busy(true, "Suppression…");
+          data.produits.splice(i, 1);
+          await saveData("Supprime le produit : " + p.nom);
+          await deleteImageIfUnused(p.image);
+          toast("Produit supprimé.");
+        }
+        render();
+      } catch (err) {
+        await handleError(err);
+      } finally { busy(false); }
+    });
+
+    // ---- Formulaire produit ----
+    function setPreview(src, icone) {
+      $("photo-preview").innerHTML = src ? `<img src="${esc(src)}" alt="">` : esc(icone || "🛍️");
+    }
+    function openForm(p) {
+      editing = p || null;
+      newPhoto = null;
+      removePhoto = false;
+      $("photo").value = "";
+      const f = $("product-form");
+      $("modal-title").textContent = p ? "Modifier le produit" : "Nouveau produit";
+      const cats = data.categories.slice();
+      if (p && p.categorie && !cats.includes(p.categorie)) cats.push(p.categorie);
+      $("cat-select").innerHTML = cats.map((c) => `<option>${esc(c)}</option>`).join("");
+      f.elements.nom.value = p ? p.nom : "";
+      f.elements.categorie.value = p ? p.categorie : cats[0] || "";
+      f.elements.prix.value = p ? p.prix || 0 : 0;
+      f.elements.description.value = p ? p.description || "" : "";
+      f.elements.disponible.checked = p ? p.disponible !== false : true;
+      setPreview(p && p.image ? imgSrc(p.image) : "", p && p.icone);
+      $("modal").hidden = false;
+      f.elements.nom.focus();
+    }
+    const closeForm = () => { $("modal").hidden = true; };
+    $("cancel").addEventListener("click", closeForm);
+    $("modal").addEventListener("click", (e) => { if (e.target === $("modal")) closeForm(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("modal").hidden) closeForm(); });
+
+    $("photo").addEventListener("change", async () => {
+      const file = $("photo").files[0];
+      if (!file) return;
+      try {
+        newPhoto = await resize(file);
+        removePhoto = false;
+        setPreview(newPhoto.dataUrl);
+      } catch (_) {
+        toast("Impossible de lire cette photo. Essayez une autre image (JPG ou PNG).", true);
+      }
+    });
+    $("photo-remove").addEventListener("click", () => {
+      newPhoto = null;
+      removePhoto = true;
+      $("photo").value = "";
+      setPreview("", editing && editing.icone);
+    });
+
+    $("product-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const f = e.target;
+      const nom = f.elements.nom.value.trim();
+      if (!nom) return;
+      const isNew = !editing;
+      const p = editing || { id: slug(nom) + "-" + Date.now().toString(36), icone: "🛍️" };
+      const ancienne = p.image || "";
+      const avant = JSON.stringify(p);
+      busy(true, "Enregistrement…");
+      try {
+        if (newPhoto) {
+          const path = "images/" + slug(nom) + "-" + Date.now().toString(36) + ".jpg";
+          busy(true, "Envoi de la photo…");
+          await uploadImage(path, newPhoto.blob, "Ajoute la photo de " + nom);
+          previews[path] = newPhoto.dataUrl;
+          p.image = path;
+        } else if (removePhoto) {
+          p.image = "";
+        }
+        p.nom = nom;
+        p.categorie = f.elements.categorie.value;
+        p.prix = Math.max(0, Math.round(Number(f.elements.prix.value) || 0));
+        p.description = f.elements.description.value.trim();
+        p.disponible = f.elements.disponible.checked;
+        if (isNew) data.produits.unshift(p);
+        busy(true, "Enregistrement…");
+        await saveData((isNew ? "Ajoute le produit : " : "Modifie le produit : ") + nom);
+        if (ancienne && ancienne !== p.image) await deleteImageIfUnused(ancienne);
+        closeForm();
+        render();
+        toast(isNew ? "Produit ajouté ✓ Visible sur le site dans 1 à 2 minutes." : "Modifications enregistrées ✓");
+      } catch (err) {
+        if (isNew) { const k = data.produits.indexOf(p); if (k >= 0) data.produits.splice(k, 1); }
+        else Object.assign(p, JSON.parse(avant));
+        await handleError(err);
+      } finally { busy(false); }
+    });
+
+    // ---- Infos boutique ----
+    $("shop-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const f = e.target;
+      const avant = JSON.stringify({ b: data.boutique, c: data.categories });
+      ["nom", "slogan", "ville", "whatsapp", "telephone", "livraison", "email", "devise", "facebook", "instagram"].forEach((k) => (data.boutique[k] = f.elements[k].value.trim()));
+      data.categories = f.elements.categories.value.split("\n").map((s) => s.trim()).filter(Boolean);
+      busy(true, "Enregistrement…");
+      try {
+        await saveData("Met à jour les infos de la boutique");
+        toast("Infos de la boutique enregistrées ✓");
+      } catch (err) {
+        const old = JSON.parse(avant);
+        data.boutique = old.b; data.categories = old.c;
+        await handleError(err);
+      } finally { busy(false); }
+    });
+
+    // ---- Démarrage ----
+    const saved = store.get();
+    let persistant = false;
+    try { persistant = !!localStorage.getItem("admin-token"); } catch (_) {}
+    if (saved) login(saved, persistant);
+    else $("login-view").hidden = false;
+  })();
+  </script>
+</body>
+</html>
