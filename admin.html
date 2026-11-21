@@ -7,7 +7,7 @@
   <title>Administration boutique</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=3">
   <style>
     body { background: var(--bg-alt); }
     .admin-wrap { max-width: 860px; margin: 0 auto; padding: 24px 16px 96px; }
@@ -123,7 +123,10 @@
 
     <div id="tab-boutique" hidden>
       <form class="box stack" id="shop-form">
-        <label class="field">Nom affiché<input name="nom" required></label>
+        <div class="row2">
+          <label class="field">Nom de la boutique (en rouge en haut du site)<input name="enseigne"></label>
+          <label class="field">Nom du vendeur<input name="nom" required></label>
+        </div>
         <label class="field">Slogan<input name="slogan"></label>
         <label class="field">Ville<input name="ville"></label>
         <div class="row2">
@@ -378,7 +381,7 @@
 
     function fillShopForm() {
       const f = $("shop-form");
-      ["nom", "slogan", "ville", "whatsapp", "telephone", "livraison", "email", "devise", "facebook", "instagram"].forEach((k) => (f.elements[k].value = data.boutique[k] || ""));
+      ["enseigne", "nom", "slogan", "ville", "whatsapp", "telephone", "livraison", "email", "devise", "facebook", "instagram"].forEach((k) => (f.elements[k].value = data.boutique[k] || ""));
       f.elements.categories.value = data.categories.join("\n");
     }
 
@@ -552,7 +555,7 @@
       e.preventDefault();
       const f = e.target;
       const avant = JSON.stringify({ b: data.boutique, c: data.categories });
-      ["nom", "slogan", "ville", "whatsapp", "telephone", "livraison", "email", "devise", "facebook", "instagram"].forEach((k) => (data.boutique[k] = f.elements[k].value.trim()));
+      ["enseigne", "nom", "slogan", "ville", "whatsapp", "telephone", "livraison", "email", "devise", "facebook", "instagram"].forEach((k) => (data.boutique[k] = f.elements[k].value.trim()));
       data.categories = f.elements.categories.value.split("\n").map((s) => s.trim()).filter(Boolean);
       busy(true, "Enregistrement…");
       try {

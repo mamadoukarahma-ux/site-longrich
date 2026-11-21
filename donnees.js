@@ -1,6 +1,7 @@
 // Ce fichier est mis à jour automatiquement par la page admin.html — inutile de le modifier à la main.
 window.SITE = {
   "boutique": {
+    "enseigne": "Longrich TOUBA",
     "nom": "Mamadou KA",
     "slogan": "Distributeur indépendant Longrich",
     "ville": "Touba Darou Minan, Sénégal",

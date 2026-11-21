@@ -12,8 +12,8 @@
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
   // --- Textes de la boutique ---
-  document.title = BOUTIQUE.nom + " — Produits Longrich";
-  $("brand-name").textContent = BOUTIQUE.nom;
+  document.title = (BOUTIQUE.enseigne || BOUTIQUE.nom) + " — Produits Longrich";
+  $("brand-name").textContent = BOUTIQUE.enseigne || BOUTIQUE.nom;
   $("hero-slogan").textContent = BOUTIQUE.slogan + " · " + BOUTIQUE.ville;
   $("hero-livraison").textContent = (BOUTIQUE.livraison || "Livraison rapide").split(".")[0];
   $("about-text").textContent =
