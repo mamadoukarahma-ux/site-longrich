@@ -133,7 +133,7 @@ window.SITE = {
       "id": "pack-complements-bone-m",
       "nom": "Pack compléments Bone-M",
       "categorie": "Compléments alimentaires",
-      "prix": 0,
+      "prix": 24000,
       "description": "Pack de compléments alimentaires Longrich (Bone-M et autres). Composition et conseils sur WhatsApp.",
       "image": "images/pack-complements.jpg",
       "icone": "📦",
