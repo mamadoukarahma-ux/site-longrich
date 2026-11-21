@@ -2,11 +2,11 @@
 window.SITE = {
   "boutique": {
     "enseigne": "Longrich TOUBA",
-    "nom": "Mamadou KA",
+    "nom": "Longrich TOUBA",
     "slogan": "Distributeur indépendant Longrich",
     "ville": "Touba Darou Minan, Sénégal",
-    "whatsapp": "221773058430",
-    "telephone": "+221 77 305 84 30",
+    "whatsapp": "221773087781",
+    "telephone": "+221 77 308 77 81",
     "email": "",
     "facebook": "",
     "instagram": "",

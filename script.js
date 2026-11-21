@@ -17,8 +17,8 @@
   $("hero-slogan").textContent = BOUTIQUE.slogan + " · " + BOUTIQUE.ville;
   $("hero-livraison").textContent = (BOUTIQUE.livraison || "Livraison rapide").split(".")[0];
   $("about-text").textContent =
-    "Je m'appelle " + BOUTIQUE.nom + ", " + (BOUTIQUE.slogan || "").replace(/^./, (c) => c.toLowerCase()) + " basé à " + BOUTIQUE.ville +
-    ". Je vous conseille et vous aide à choisir les produits adaptés à vos besoins. " + (BOUTIQUE.livraison || "");
+    BOUTIQUE.nom + " : " + (BOUTIQUE.slogan || "").replace(/^./, (c) => c.toLowerCase()) + " basé à " + BOUTIQUE.ville +
+    ". Nous vous conseillons et vous aidons à choisir les produits adaptés à vos besoins. " + (BOUTIQUE.livraison || "");
   $("footer-text").textContent = "© " + new Date().getFullYear() + " " + BOUTIQUE.nom + " · " + BOUTIQUE.ville;
 
   const helloMsg = "Bonjour " + BOUTIQUE.nom + ", je souhaite avoir des informations sur vos produits Longrich.";
