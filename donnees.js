@@ -21,6 +21,16 @@ window.SITE = {
   ],
   "produits": [
     {
+      "id": "kit-anti-acne-mws3l25t",
+      "icone": "🛍️",
+      "image": "images/kit-anti-acne-mws3l25t.jpg",
+      "nom": "Kit anti acné",
+      "categorie": "Soins du corps",
+      "prix": 19000,
+      "description": "Composé de 3 savons., pâte dentifrice pour masque de visage et du lait de corps SOD très efficace pour les tâches",
+      "disponible": true
+    },
+    {
       "id": "lotion-rajeunissante-longrich-mws3eyoo",
       "icone": "🛍️",
       "image": "images/lotion-rajeunissante-longrich-mws3eyop.jpg",
