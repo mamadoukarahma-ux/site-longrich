@@ -124,7 +124,7 @@ window.SITE = {
       "id": "calcium-fer-zinc-glucosamine",
       "nom": "Calcium-Fer-Zinc & Glucosamine",
       "categorie": "Compléments alimentaires",
-      "prix": 80000,
+      "prix": 37000,
       "description": "Comprimés Calcium/Fer/Zinc goût lait et Glucosamine-Chondroïtine. Compléments alimentaires, vendus ensemble ou séparément.",
       "image": "images/calcium-glucosamine.jpg",
       "icone": "💊",
