@@ -21,6 +21,16 @@ window.SITE = {
   ],
   "produits": [
     {
+      "id": "savon-noir-de-bamboo-mwruqsl4",
+      "icone": "🛍️",
+      "image": "images/savon-noir-de-bamboo-mwruqsl4.jpg",
+      "nom": "Savon noir de bamboo",
+      "categorie": "Soins du corps",
+      "prix": 8000,
+      "description": "Les 3 à 8000 \n1 savon à 3000",
+      "disponible": true
+    },
+    {
       "id": "huile-de-bain-parfum-olive",
       "nom": "Huile de bain parfum olive",
       "categorie": "Soins du corps",
