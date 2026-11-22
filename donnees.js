@@ -21,6 +21,16 @@ window.SITE = {
   ],
   "produits": [
     {
+      "id": "cafe-cordycep-militaris-mwrzbv5m",
+      "icone": "🛍️",
+      "image": "images/cafe-cordycep-militaris-mwrzbv5m.jpg",
+      "nom": "Café Cordycep militaris",
+      "categorie": "Soins du corps",
+      "prix": 7000,
+      "description": "Boisson chaude enrichie au champignon Cordyceps militaris, idéale pour stimuler l'énergie, renforcer le système immunitaire et lutter contre la fatigue au quotidien.",
+      "disponible": true
+    },
+    {
       "id": "savon-noir-de-bamboo-mwruqsl4",
       "icone": "🛍️",
       "image": "images/savon-noir-de-bamboo-mwruqsl4.jpg",
