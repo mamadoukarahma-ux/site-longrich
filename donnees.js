@@ -21,6 +21,16 @@ window.SITE = {
   ],
   "produits": [
     {
+      "id": "the-marron-mws37ejm",
+      "icone": "🛍️",
+      "image": "images/the-marron-mws37ejm.jpg",
+      "nom": "Thé marron",
+      "categorie": "Soins du corps",
+      "prix": 8000,
+      "description": "Infusion détoxifiante qui élimine les toxines, facilite la digestion et favorise la perte de poids.",
+      "disponible": true
+    },
+    {
       "id": "the-rose-longrich-mws30x3n",
       "icone": "🛍️",
       "image": "images/the-rose-longrich-mws30x3o.jpg",
