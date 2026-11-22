@@ -284,6 +284,18 @@
     async function handleError(e) {
       toast(errMsg(e), true);
       if (e.status === 401) { logout(); return; }
+      // Droit refusé : on précise à quel compte GitHub appartient le code
+      if (e.status === 403 || e.status === 404) {
+        try {
+          const r = await fetch("https://api.github.com/user", { headers: { Authorization: "Bearer " + token, Accept: "application/vnd.github+json" }, cache: "no-store" });
+          const u = r.ok ? await r.json() : null;
+          if (u && u.login && u.login.toLowerCase() !== OWNER.toLowerCase()) {
+            toast("Ce code d'accès a été créé avec le compte GitHub « " + u.login + " ». Il faut un code créé depuis le compte « " + OWNER + " » (propriétaire du site).", true);
+          } else if (u && u.login) {
+            toast("Ce code d'accès (compte « " + u.login + " ») est en lecture seule. Sur GitHub, modifiez-le : Contents → « Read and write », sur le dépôt site-longrich.", true);
+          }
+        } catch (_) {}
+      }
       if (e.status === 409 || e.status === 422) {
         try { await loadData(); render(); } catch (_) {}
       }
