@@ -25,7 +25,7 @@ window.SITE = {
       "icone": "🛍️",
       "image": "images/the-rose-longrich-mws30x3o.jpg",
       "nom": "Thé rose longrich",
-      "categorie": "Hygiène",
+      "categorie": "Bien-être",
       "prix": 8000,
       "description": "Mélange amincissant conçu pour brûler les graisses, réguler le métabolisme et aider à retrouver une silhouette harmonieuse.",
       "disponible": true
