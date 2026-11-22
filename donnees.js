@@ -21,6 +21,16 @@ window.SITE = {
   ],
   "produits": [
     {
+      "id": "lotion-rajeunissante-longrich-mws3eyoo",
+      "icone": "🛍️",
+      "image": "images/lotion-rajeunissante-longrich-mws3eyop.jpg",
+      "nom": "Lotion rajeunissante longrich",
+      "categorie": "Soins du corps",
+      "prix": 6000,
+      "description": "Soin corporel hydratant en profondeur qui lisse la peau, ravive son éclat naturel et atténue les signes de l'âge.",
+      "disponible": true
+    },
+    {
       "id": "calcium-longrich-mws3c2we",
       "icone": "🛍️",
       "image": "images/calcium-longrich-mws3c2we.jpg",
