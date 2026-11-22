@@ -21,6 +21,16 @@ window.SITE = {
   ],
   "produits": [
     {
+      "id": "the-rose-longrich-mws30x3n",
+      "icone": "🛍️",
+      "image": "images/the-rose-longrich-mws30x3o.jpg",
+      "nom": "Thé rose longrich",
+      "categorie": "Hygiène",
+      "prix": 8000,
+      "description": "Mélange amincissant conçu pour brûler les graisses, réguler le métabolisme et aider à retrouver une silhouette harmonieuse.",
+      "disponible": true
+    },
+    {
       "id": "creme-mains-et-pieds-mwrziplg",
       "icone": "🛍️",
       "image": "images/creme-mains-et-pieds-mwrziplg.jpg",
