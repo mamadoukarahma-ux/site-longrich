@@ -38,7 +38,7 @@ window.SITE = {
       "description": "Golden Olive Scented Bath Oil : huile de bain au doux parfum d'olive pour une peau douce et nourrie.",
       "image": "images/huile-de-bain-parfum-olive-mwrurl18.jpg",
       "icone": "🫒",
-      "disponible": false
+      "disponible": true
     },
     {
       "id": "lait-corporel-sod",
