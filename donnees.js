@@ -21,6 +21,16 @@ window.SITE = {
   ],
   "produits": [
     {
+      "id": "calcium-longrich-mws3c2we",
+      "icone": "🛍️",
+      "image": "images/calcium-longrich-mws3c2we.jpg",
+      "nom": "Calcium longrich",
+      "categorie": "Compléments alimentaires",
+      "prix": 13500,
+      "description": "Comprimés à croquer enrichis en calcium et magnésium pour renforcer les os et les dents, prévenir l'ostéoporose et soutenir la santé globale.",
+      "disponible": true
+    },
+    {
       "id": "the-marron-mws37ejm",
       "icone": "🛍️",
       "image": "images/the-marron-mws37ejm.jpg",
