@@ -48,7 +48,7 @@ window.SITE = {
       "description": "Sheep Placenta SOD Milk Lotion : lait hydratant pour une peau douce, souple et éclatante.",
       "image": "images/lait-sod.jpg",
       "icone": "🧴",
-      "disponible": false
+      "disponible": true
     },
     {
       "id": "savon-au-charbon-de-bambou",
