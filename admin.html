@@ -7,7 +7,7 @@
   <title>Administration boutique</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="stylesheet" href="style.css?v=5">
   <style>
     body { background: var(--bg-alt); }
     .admin-wrap { max-width: 860px; margin: 0 auto; padding: 24px 16px 96px; }
@@ -54,7 +54,8 @@
     .price-edit { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font-size: .8rem; color: var(--muted); }
     .price-edit input { width: 120px; font: inherit; font-size: .9rem; padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; color: var(--text); }
     .price-edit input.changed { border-color: var(--gold); background: #fffbea; }
-    .price-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 35; background: #fff; border-top: 1px solid var(--border); box-shadow: 0 -6px 24px rgba(0,0,0,.08); }
+    .price-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 35; background: #fffbea; border-top: 3px solid var(--gold); box-shadow: 0 -6px 24px rgba(0,0,0,.15); padding-bottom: env(safe-area-inset-bottom); }
+    .price-bar #price-save { font-size: 1rem; padding: 12px 22px; }
     .price-bar-inner { max-width: 860px; margin: 0 auto; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
     .note { background: var(--green-light); border-radius: 12px; padding: 12px 14px; font-size: .85rem; color: var(--green-dark); margin-bottom: 16px; }
     @media (max-width: 600px) {
@@ -96,7 +97,7 @@
       </div>
     </div>
 
-    <div class="note">Chaque modification est enregistrée tout de suite. Elle apparaît sur le site public en 1 à 2 minutes (rechargez la page du site).</div>
+    <div class="note"><strong>Changer un prix :</strong> tapez le nouveau prix dans la case « Prix » du produit, puis appuyez sur le bouton <strong>« Enregistrer les prix »</strong> qui apparaît en bas de l'écran. Les changements apparaissent sur le site en 1 à 2 minutes.</div>
 
     <div class="tabs">
       <button class="chip active" data-tab="produits">Produits</button>
@@ -164,7 +165,7 @@
       <label class="field">Nom du produit<input name="nom" required maxlength="80"></label>
       <div class="row2">
         <label class="field">Catégorie<select name="categorie" id="cat-select"></select></label>
-        <label class="field">Prix (0 = prix sur demande)<input name="prix" type="number" min="0" step="1" inputmode="numeric"></label>
+        <label class="field">Prix (0 = prix sur demande)<input name="prix" type="text" inputmode="numeric" autocomplete="off" placeholder="Ex : 2500"></label>
       </div>
       <label class="field">Description<textarea name="description" maxlength="400"></textarea></label>
       <label class="check"><input name="disponible" type="checkbox"> Disponible (décochez si en rupture de stock)</label>
@@ -325,7 +326,7 @@
             <strong>${esc(p.nom)}${p.disponible === false ? `<span class="tag-off">Rupture</span>` : ""}</strong>
             <span>${esc(p.categorie)}</span>
             <label class="price-edit">Prix
-              <input type="number" min="0" step="1" inputmode="numeric" placeholder="sur demande"
+              <input type="text" inputmode="numeric" autocomplete="off" placeholder="sur demande"
                 data-price="${esc(p.id)}" value="${esc(prixAffiche(p))}" class="${p.id in prixModifies ? "changed" : ""}">
               ${esc(data.boutique.devise || "FCFA")}</label>
           </div>
@@ -340,7 +341,8 @@
     }
     // ---- Saisie rapide des prix dans la liste ----
     let prixModifies = {}; // id -> nouveau prix (nombre), en attente d'enregistrement
-    const lirePrix = (v) => Math.max(0, Math.round(Number(v) || 0));
+    // Accepte « 2500 », « 2 500 », « 2.500 », « 2500 F », « 2500 FCFA »…
+    const lirePrix = (v) => Number(String(v == null ? "" : v).replace(/[^0-9]/g, "")) || 0;
     function prixAffiche(p) {
       const v = p.id in prixModifies ? prixModifies[p.id] : p.prix;
       return v > 0 ? v : "";
@@ -359,6 +361,14 @@
       else delete prixModifies[id];
       e.target.classList.toggle("changed", id in prixModifies);
       majBarrePrix();
+    });
+    // Touche Entrée (ou « OK » sur le clavier du téléphone) = enregistrer
+    $("plist").addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && e.target.dataset.price) {
+        e.preventDefault();
+        e.target.blur();
+        if (Object.keys(prixModifies).length) $("price-save").click();
+      }
     });
     $("price-cancel").addEventListener("click", () => { prixModifies = {}; majBarrePrix(); render(); });
     $("price-save").addEventListener("click", async () => {
@@ -531,7 +541,7 @@
         }
         p.nom = nom;
         p.categorie = f.elements.categorie.value;
-        p.prix = Math.max(0, Math.round(Number(f.elements.prix.value) || 0));
+        p.prix = lirePrix(f.elements.prix.value);
         p.description = f.elements.description.value.trim();
         p.disponible = f.elements.disponible.checked;
         if (isNew) data.produits.unshift(p);
