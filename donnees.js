@@ -64,8 +64,8 @@ window.SITE = {
       "id": "coffret-soins-longrich",
       "nom": "Coffret soins Longrich",
       "categorie": "Soins du corps",
-      "prix": 35000,
-      "description": "Sélection de soins : crème mains, savons au charbon de bambou, huile Snake Oil, lait SOD… Composition à confirmer sur WhatsApp.",
+      "prix": 39000,
+      "description": "Gamme pour un teint éclatant : crème mains, savons au charbon de bambou, huile Snake Oil, lait SOD",
       "image": "images/coffret-soins.jpg",
       "icone": "🎁",
       "disponible": true
