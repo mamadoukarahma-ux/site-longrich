@@ -21,6 +21,16 @@ window.SITE = {
   ],
   "produits": [
     {
+      "id": "the-marron-mws4905x",
+      "icone": "🛍️",
+      "image": "images/the-marron-mws4905x.jpg",
+      "nom": "Thé marron",
+      "categorie": "Soins du corps",
+      "prix": 8000,
+      "description": "Infusion détoxifiante qui élimine les toxines, facilite la digestion et favorise la perte de poids.",
+      "disponible": true
+    },
+    {
       "id": "kit-anti-acne-mws3l25t",
       "icone": "🛍️",
       "image": "images/kit-anti-acne-mws3l25t.jpg",
