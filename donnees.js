@@ -44,11 +44,11 @@ window.SITE = {
       "id": "lait-corporel-sod",
       "nom": "Lait corporel SOD",
       "categorie": "Soins du corps",
-      "prix": 50000,
+      "prix": 6000,
       "description": "Sheep Placenta SOD Milk Lotion : lait hydratant pour une peau douce, souple et éclatante.",
       "image": "images/lait-sod.jpg",
       "icone": "🧴",
-      "disponible": true
+      "disponible": false
     },
     {
       "id": "savon-au-charbon-de-bambou",
