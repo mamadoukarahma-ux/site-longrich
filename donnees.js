@@ -21,6 +21,16 @@ window.SITE = {
   ],
   "produits": [
     {
+      "id": "creme-mains-et-pieds-mwrziplg",
+      "icone": "🛍️",
+      "image": "images/creme-mains-et-pieds-mwrziplg.jpg",
+      "nom": "Crème mains et pieds",
+      "categorie": "Soins du corps",
+      "prix": 5000,
+      "description": "Hydrate et nourrit la peau, répare les mains sèches, rend les mains plus douces, répare et apaise les mains, à base de vitamine E",
+      "disponible": true
+    },
+    {
       "id": "cafe-cordycep-militaris-mwrzbv5m",
       "icone": "🛍️",
       "image": "images/cafe-cordycep-militaris-mwrzbv5m.jpg",
