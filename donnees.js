@@ -21,6 +21,16 @@ window.SITE = {
   ],
   "produits": [
     {
+      "id": "libao-longrich-mws4n2k6",
+      "icone": "🛍️",
+      "image": "images/libao-longrich-mws4n2k6.jpg",
+      "nom": "Libao longrich",
+      "categorie": "Compléments alimentaires",
+      "prix": 30000,
+      "description": "Complément alimentaire revitalisant  conçu pour stimuler la vitalité masculine, renforcer l'immunité et favoriser le bien-être général.",
+      "disponible": true
+    },
+    {
       "id": "kit-anti-acne-mws3l25t",
       "icone": "🛍️",
       "image": "images/kit-anti-acne-mws3l25t.jpg",
