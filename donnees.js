@@ -139,16 +139,6 @@ window.SITE = {
       "image": "images/calcium-glucosamine.jpg",
       "icone": "💊",
       "disponible": true
-    },
-    {
-      "id": "pack-complements-bone-m",
-      "nom": "Pack compléments Bone-M",
-      "categorie": "Compléments alimentaires",
-      "prix": 24000,
-      "description": "Pack de compléments alimentaires Longrich (Bone-M et autres). Composition et conseils sur WhatsApp.",
-      "image": "images/pack-complements.jpg",
-      "icone": "📦",
-      "disponible": true
     }
   ]
 };
